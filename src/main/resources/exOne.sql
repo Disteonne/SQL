@@ -46,3 +46,31 @@ FROM boys
 NATURAL JOIN
 toys;
 ________________________________
+ВСТРОЕННЫЕ ЗАПРОСЫ
+
+SELECT mc.last_name,mc.first_name,mc.phone
+FROM my_cont AS mc
+NATURAL INNER
+job_des AS jd
+WHERE jd.title='Разработчик'
+AND jd.salary<105000;
+____________     _______________
+SELECT mc.last_name,mc.first_name,mc.phone,jc.title
+FROM my_cont AS mc
+NATURAL INNER
+job_des AS jd
+WHERE jd.title IN(SELECT title FROM job_list);
+____________     _______________
+SELECT mc.f_n,mc.l_n,jc.salary
+FROM my_cont mc
+NATURAL JOIN
+job_current jc
+WHERE jc.salary>(
+SELECT jc.salary
+FROM my_cont mc
+NATURAL JOIN
+job_current jc
+WHERE email='andy@mail.ru');
+
+
+
