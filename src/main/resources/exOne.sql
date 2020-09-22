@@ -72,5 +72,56 @@ NATURAL JOIN
 job_current jc
 WHERE email='andy@mail.ru');
 
+________________________________
+ВНЕШНЕЕ ЛЕВОЕ СОЕДИНЕНИЕ
 
+SELECT g.girl,t.toy
+FROM girls g  <---ЛЕВАЯ
+LEFT OUTER JOIN
+toys t <--- ПРАВАЯ
+ON girls.toy_id=toys.toy_id;
+
+-Какие данные соотв. таблице girls из табл. toy при условии ON
+
+SELECT g.girl,t.toy
+FROM toys t  <---ЛЕВАЯ
+LEFT OUTER JOIN
+girls g <--- ПРАВАЯ
+ON girls.toy_id=toys.toy_id;
+
+-Какие данные соотв. таблице toys из табл. girls при условии ON
+____________      _______________
+ВНЕШНЕЕ ПРАВОЕ СОЕДИНЕНИЕ
+
+SELECT g.girl,t.toy
+FROM girls g  <---ПРАВАЯ
+RIGHT OUTER JOIN
+toys t <--- ЛЕВАЯ
+ON girls.toy_id=toys.toy_id;
+
+-Какие данные соотв. таблице girls из табл. toy при условии ON
+
+SELECT g.girl,t.toy
+FROM toys t  <---ПРАВАЯ
+RIGHT OUTER JOIN
+girls g <--- ЛЕВАЯ
+ON girls.toy_id=toys.toy_id;
+
+-Какие данные соотв. таблице toys из табл. girls при условии ON
+____________      _______________
+СЛЕДУЮЩИЕ ЗАПРОСЫ ИДЕНТИЧНЫ
+
+SELECT g.girl,t.toy
+FROM girls g  <---ПРАВАЯ
+RIGHT OUTER JOIN
+toys t <--- ЛЕВАЯ
+ON girls.toy_id=toys.toy_id;
+
+          И
+
+SELECT g.girl,t.toy
+FROM toys t  <---ЛЕВАЯ
+LEFT OUTER JOIN
+girls g <--- ПРАВАЯ
+ON girls.toy_id=toys.toy_id;
 
