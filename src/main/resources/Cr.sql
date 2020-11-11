@@ -56,3 +56,33 @@ where l.country_id=c.country_id )
 SELECT loc,pc,reg,COUNT(loc) over(partition by kek) from(
 SELECT l.location_id as loc, l.postal_code as pc,length(l.postal_code) as kek, c.region_id as reg from locations l ,countries c
 where l.country_id=c.country_id )
+
+___________________________________________
+
+SELECT e1.employee_id,e1.last_name,e1.manager_id as mng,d.manager_id as depmng from employees e1,departments d
+where e1.department_id=d.department_id AND e1.manager_id!=d.manager_id) AS table,employees e2
+
+
+SELECT e1.last_name,e2.last_name,e3.last_name from employee e1,employee e2,(SELECT e3.employee_id as id from employees e3,departments d WHERE e3.departmnet_id=d.department_id AND e3.manager_id!=d.manager_id) as table
+WHERE e1.manager_id=e2.employee_id AND e3.employee_id=table.id
+
+SELECT e2.last_name,table.mng,table.depmng from employees e2 ,
+(
+SELECT e1.employee_id as id,e1.manager_id as mng,d.manager_id as depmng from employees e1,departments d
+where e1.department_id=d.department_id AND e1.manager_id!=d.manager_id
+)
+AS table
+WHERE table.id=e2.employee_id
+
+
+
+SELECT f_name,s_name,e3.last_name as t_name FROM(
+SELECT f_name ,e2.last_name as s_name,depmng FROM(
+ SELECT e.last_name as f_name,mng,depmng FROM(
+  SELECT e1.employee_id as id,e1.manager_id as mng,d.manager_id as depmng from employees e1,departments d
+  where e1.department_id=d.department_id AND e1.manager_id!=d.manager_id) ,employees e
+  WHERE id=e.employee_id),
+employees e2
+WHERE mng=e2.employee_id
+),employees e3
+WHERE depmng=e3.employee_id
