@@ -86,3 +86,20 @@ employees e2
 WHERE mng=e2.employee_id
 ),employees e3
 WHERE depmng=e3.employee_id
+______________________________________
+SELECT DISTINCT c.COMPANYNAME,MIN(od.unitprice*od.quantity*(1-od.discount)) over(partition by c.COMPANYNAME),MAX(od.unitprice*od.quantity*(1-od.discount)) over(partition by c.COMPANYNAME),AVG(od.unitprice*od.quantity*(1-od.discount)) over(partition by c.COMPANYNAME) FROM CUSTOMERS c,ORDERS o,ORDERDETAILS od
+WHERE c.customerid=o.customerid AND o.orderid=od.orderid
+
+SELECT DISTINCT c.COMPANYNAME,MIN(od.unitprice*od.quantity*(1-od.discount)) over(partition by c.COMPANYNAME) as minSum,MAX(od.unitprice*od.quantity*(1-od.discount)) over(partition by c.COMPANYNAME) as maxSum,AVG(od.unitprice*od.quantity*(1-od.discount)) over(partition by c.COMPANYNAME) as avgSum FROM CUSTOMERS c,ORDERS o,ORDERDETAILS od
+WHERE c.customerid=o.customerid AND o.orderid=od.orderid AND od.orderid=10248/10250
+
+SELECT DISTINCT ORDERID FROM ORDERDETAILS
+
+SELECT * from ORDERDETAILS
+1261,4+214,2+77
+10250
+
+95,76+222,3+336
+10251
+
+
