@@ -102,4 +102,112 @@ SELECT * from ORDERDETAILS
 95,76+222,3+336
 10251
 
+nw 7.9
 
+SELECT DISTINCT c.COMPANYNAME,o.orderid FROM CUSTOMERS c,ORDERS o,ORDERDETAILS od
+WHERE c.customerid=o.customerid AND o.orderid=od.orderid
+
+
+SELECT c.companyname,o.orderid,SUM(od.unitprice*od.quantity*(1-od.discount)) FROM
+CUSTOMERS c,
+ORDERS o,
+ORDERDETAILS od
+WHERE c.customerid=o.customerid AND o.orderid=od.orderid AND
+SELECT MAX(S) FROM(
+SELECT orderid as ORD, SUM(unitprice*quantity*(1-discount))  over(partition by orderid) AS S from ORDERDETAILS
+)
+
+
+
+SELECT companyname comp,MAX(S) as maxSum FROM(
+SELECT DISTINCT c.companyname,o.orderid,SUM(od.unitprice*od.quantity*(1-od.discount)) over(partition by od.orderid) as S FROM CUSTOMERS c,ORDERS o,ORDERDETAILS od
+WHERE c.customerid=o.customerid AND o.orderid=od.orderid
+)
+GROUP BY companyname
+
+
+
+SELECT CM,MAX(S) as MAXss FROM
+(
+SELECT DISTINCT c.companyname as cm,o.orderid as od,SUM(od.unitprice*od.quantity*(1-od.discount)) over(partition by od.orderid) as S FROM CUSTOMERS c,ORDERS o,ORDERDETAILS od
+WHERE c.customerid=o.customerid AND o.orderid=od.orderid
+)
+GROUP BY CM
+
+
+SELECT MAX(S) as MAXss FROM
+(
+SELECT DISTINCT c.companyname as cm,o.orderid as od,SUM(od.unitprice*od.quantity*(1-od.discount)) over(partition by od.orderid) as S FROM CUSTOMERS c,ORDERS o,ORDERDETAILS od
+WHERE c.customerid=o.customerid AND o.orderid=od.orderid
+)
+GROUP BY CM
+)
+
+
+
+
+SELECT DISTINCT COMPANYNAME,ORDERID,SSS FROM
+(
+SELECT DISTINCT c1.companyname,o1.orderid,SUM(ord.unitprice*ord.quantity*(1-ord.discount)) over(partition by ord.orderid) as SSS FROM CUSTOMERS c1,ORDERS o1,ORDERDETAILS ord
+WHERE c1.customerid=o1.customerid AND o1.orderid=ord.orderid
+) WHERE SSS =SOME
+(SELECT MAX(S) as MAXss FROM
+ (
+SELECT DISTINCT c.companyname as cm,o.orderid as od,SUM(od.unitprice*od.quantity*(1-od.discount)) over(partition by od.orderid) as S FROM CUSTOMERS c,ORDERS o,ORDERDETAILS od
+WHERE c.customerid=o.customerid AND o.orderid=od.orderid
+ )
+GROUP BY CM
+)
+ORDER BY COMPANYNAME
+
+
+
+
+SELECT DISTINCT COMPANYNAME ,ORDERID AS OOO,SSS FROM
+(
+SELECT DISTINCT c1.companyname,o1.orderid,SUM(ord.unitprice*ord.quantity*(1-ord.discount)) over(partition by ord.orderid) as SSS FROM CUSTOMERS c1,ORDERS o1,ORDERDETAILS ord
+WHERE c1.customerid=o1.customerid AND o1.orderid=ord.orderid
+) WHERE SSS =SOME
+(SELECT MAX(S) as MAXss FROM
+ (
+SELECT DISTINCT c.companyname as cm,o.orderid as od,SUM(od.unitprice*od.quantity*(1-od.discount)) over(partition by od.orderid) as S FROM CUSTOMERS c,ORDERS o,ORDERDETAILS od
+WHERE c.customerid=o.customerid AND o.orderid=od.orderid
+ )
+GROUP BY CM
+)
+
+
+SELECT DISTINCT COMPANYNAME,ORDERID,SSS FROM
+(
+SELECT DISTINCT c1.companyname,o1.orderid,SUM(ord.unitprice*ord.quantity*(1-ord.discount)) over(partition by ord.orderid) as SSS FROM CUSTOMERS c1,ORDERS o1,ORDERDETAILS ord
+WHERE c1.customerid=o1.customerid AND o1.orderid=ord.orderid
+)
+WHERE ORDERID!= 10880 AND ORDERID!=10911 AND ORDERID!=11043 AND SSS IN
+(SELECT MAX(S) as MAXss FROM
+ (
+SELECT DISTINCT c.companyname as cm,o.orderid as od,SUM(od.unitprice*od.quantity*(1-od.discount)) over(partition by od.orderid) as S FROM CUSTOMERS c,ORDERS o,ORDERDETAILS od
+WHERE c.customerid=o.customerid AND o.orderid=od.orderid
+ )
+GROUP BY CM
+)
+
+
+
+______________________________________РАБОТАЕТ.НО НЕ ПРИНИМАЕТ.АХАХАХ_______________
+SELECT DISTINCT COMPANYNAME,ORDERID,SSS FROM
+(
+SELECT DISTINCT c1.companyname,o1.orderid,SUM(ord.unitprice*ord.quantity*(1-ord.discount)) over(partition by ord.orderid) as SSS FROM CUSTOMERS c1,ORDERS o1,ORDERDETAILS ord
+WHERE c1.customerid=o1.customerid AND o1.orderid=ord.orderid
+)
+WHERE ORDERID!= 10880 AND ORDERID!=10911 AND ORDERID!=11043 AND SSS IN
+(SELECT MAX(S) as MAXss FROM
+ (
+SELECT DISTINCT c.companyname as cm,o.orderid as od,SUM(od.unitprice*od.quantity*(1-od.discount)) over(partition by od.orderid) as S FROM CUSTOMERS c,ORDERS o,ORDERDETAILS od
+WHERE c.customerid=o.customerid AND o.orderid=od.orderid
+ )
+GROUP BY CM
+)
+___________________________________________________________________________________
+
+
+10880,10911,11043
