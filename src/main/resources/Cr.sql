@@ -86,7 +86,7 @@ employees e2
 WHERE mng=e2.employee_id
 ),employees e3
 WHERE depmng=e3.employee_id
-______________________________________
+______________________________________7.8
 SELECT DISTINCT c.COMPANYNAME,MIN(od.unitprice*od.quantity*(1-od.discount)) over(partition by c.COMPANYNAME),MAX(od.unitprice*od.quantity*(1-od.discount)) over(partition by c.COMPANYNAME),AVG(od.unitprice*od.quantity*(1-od.discount)) over(partition by c.COMPANYNAME) FROM CUSTOMERS c,ORDERS o,ORDERDETAILS od
 WHERE c.customerid=o.customerid AND o.orderid=od.orderid
 
@@ -101,7 +101,7 @@ SELECT * from ORDERDETAILS
 
 95,76+222,3+336
 10251
-
+___________________________________________________________________________________________________-
 nw 7.9
 
 SELECT DISTINCT c.COMPANYNAME,o.orderid FROM CUSTOMERS c,ORDERS o,ORDERDETAILS od
@@ -211,3 +211,5 @@ ________________________________________________________________________________
 
 
 10880,10911,11043
+
+для задачи выше <-
