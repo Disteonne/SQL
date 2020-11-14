@@ -213,3 +213,30 @@ ________________________________________________________________________________
 10880,10911,11043
 
 для задачи выше <-
+______________________________________6/3
+SELECT  SYS_CONNECT_BY_PATH(first_name||' '||last_name,'>') from employees
+start with  employee_id = (SELECT e.manager_id from employees e where e.employee_id=110)
+connect by PRIOR  manager_id=  employee_id
+
+
+SELECT REGEXP_REPLACE(reverse(SYS_CONNECT_BY_PATH(reverse(last_name)||' '||reverse(first_name),'>')),'[>]$','') from employees
+where  CONNECT_BY_ISLEAF=1
+start with  employee_id = (SELECT e.manager_id from employees e where e.employee_id=110)
+connect by  PRIOR  manager_id=   employee_id
+ORDER BY level DESC
+
+
+SELECT first_name as
+EMP_NAME, REGEXP_REPLACE(reverse(SYS_CONNECT_BY_PATH(reverse(last_name)||' '||reverse(first_name),'>')),'[>]$','') as MANAGERS,level AS MANAGERS_COUNT  from employees
+where  CONNECT_BY_ISLEAF=1
+start with  employee_id = (SELECT e.manager_id from employees e where e.employee_id=110)
+connect by  PRIOR  manager_id=   employee_id
+ORDER BY level DESC
+
+________________________________
+
+SELECT TRIM('John Chen') as
+EMP_NAME, REGEXP_REPLACE(reverse(SYS_CONNECT_BY_PATH(reverse(last_name)||' '||reverse(first_name),'>')),'[>]$','') as MANAGERS,level AS MANAGERS_COUNT  from employees
+where  CONNECT_BY_ISLEAF=1
+start with  employee_id = (SELECT e.manager_id from employees e where e.employee_id=110)
+connect by  PRIOR  manager_id=   employee_idi
