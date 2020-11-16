@@ -240,3 +240,40 @@ EMP_NAME, REGEXP_REPLACE(reverse(SYS_CONNECT_BY_PATH(reverse(last_name)||' '||re
 where  CONNECT_BY_ISLEAF=1
 start with  employee_id = (SELECT e.manager_id from employees e where e.employee_id=110)
 connect by  PRIOR  manager_id=   employee_idi
+
+
+______________________________________6.6
+SELECT employee_id, first_name, last_name  FROM employees
+start with employee_id=100
+connect by manager_id=PRIOR employee_id
+
+
+SELECT employee_id, first_name, last_name  FROM (SELECT * FROM employees e WHERE manager_id NOT NULL)
+start with employee_id=100
+connect by manager_id=PRIOR employee_id
+
+
+SELECT employee_id, first_name, last_name  FROM (SELECT * FROM employees e WHERE manager_id IS NOT NULL)
+start with employee_id=(SELECT e1.employee_id as id FROM employees e1 WHERE manager_id=100)
+connect by manager_id=PRIOR employee_id
+
+
+SELECT employee_id, first_name, last_name FROM employees
+where level!=1
+start with employee_id=100
+connect by manager_id=PRIOR employee_id
+
+SELECT employee_id, first_name, last_name FROM employees
+where  manager_id IS NULL
+UNION SELECT employee_id, first_name, last_name FROM employees
+where  manager_id=100
+
+
+
+SELECT employee_id, first_name, last_name,CONNECT_BY_ISLEAF,level FROM employees
+WHERE CONNECT_BY_ISLEAF=0 AND manager_id=100 OR manager_id IS NULL
+start with manager_id is null
+connect by manager_id= PRIOR employee_id
+
+
+
