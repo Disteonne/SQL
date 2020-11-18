@@ -275,5 +275,106 @@ WHERE CONNECT_BY_ISLEAF=0 AND manager_id=100 OR manager_id IS NULL
 start with manager_id is null
 connect by manager_id= PRIOR employee_id
 
+___________________________________________-6.6
+select  mil.name from military_units mil
+where mil.name LIKE 'Platoon%'
+
+
+SELECT st.person_id,st.name,st.unit_id
+FROM staff st,
+(
+select  * from military_units mil
+where mil.name LIKE 'Platoon%'
+) plat
+where plat.unit_id=st.unit_id
+
+  SELECT up.name,up.unit_id,milit.unit_id from(
+     SELECT st.person_id,st.name,st.unit_id
+FROM staff st,
+(
+select  * from military_units mil
+where mil.name LIKE 'Platoon%'
+) plat
+   where plat.unit_id=st.unit_id
+  ) up, military_units milit
+ WHERE up.unit_id=milit.parent_id
+
+
+
+
+SELECT mmm.name from military_units mmm,(
+ SELECT up.name,milit.unit_id from(
+     SELECT st.person_id,st.name,st.unit_id
+FROM staff st,
+(
+select  * from military_units mil
+where mil.name LIKE 'Platoon%'
+) plat
+   where plat.unit_id=st.unit_id
+  ) up, military_units milit
+ WHERE up.unit_id=milit.parent_id) opop
+WHERE mmm.unit_id=300
+
+
+240
+
+SELECT mmm.name from military_units mmm,(
+SELECT up.name,up.unit_id,milit.unit_id AS ch from(
+     SELECT st.person_id,st.name,st.unit_id
+FROM staff st,
+(
+select  * from military_units mil
+where mil.name LIKE 'Platoon%'
+) plat
+   where plat.unit_id=st.unit_id
+  ) up, military_units milit
+ WHERE up.unit_id=milit.parent_id) opop
+WHERE mmm.unit_id=240
+
+
+
+
+
+SELECT COUNT(last.unit_id),last.name from(
+SELECT up.name,up.unit_id,milit.unit_id AS ch from(
+     SELECT st.person_id,st.name,st.unit_id
+FROM staff st,
+(
+select  * from military_units mil
+where mil.name LIKE 'Platoon%'
+) plat
+   where plat.unit_id=st.unit_id
+  ) up, military_units milit
+ WHERE up.unit_id=milit.parent_id) last
+group by last.name
+
+
+SELECT * from staff s,(
+select  mil.unit_id AS unit,mil.name as unitname,mil.parent_id as parent from military_units mil
+where mil.name LIKE 'Platoon%'
+) military_new
+where s.unit_id=military_new.unit
+
+SELECT * from military_units mil_un,(
+SELECT * from staff s,(
+select  mil.unit_id AS unit,mil.name as unitname,mil.parent_id as parent from military_units mil
+where mil.name LIKE 'Platoon%'
+) military_new
+where s.unit_id=military_new.unit) table
+where mil_un.unit_id=table.unit
+
+
+
+SELECT mmm.unit_id from
+(
+SELECT * from staff s,
+ (
+  select  mil.unit_id AS unit,mil.name as unitname,mil.parent_id as parent from military_units mil
+  where mil.name LIKE 'Platoon%'
+ ) military_new
+where s.unit_id=military_new.unit
+) table, military_units
+where mmm.parent_id=table.unit
+
 
 
