@@ -375,6 +375,65 @@ SELECT * from staff s,
 where s.unit_id=military_new.unit
 ) table, military_units
 where mmm.parent_id=table.unit
+________________________________________
+6.5
+SELECT kk.name_pers, ss.name AS name_ss FROM
+(
+SELECT m.parent_id,tt.id_pers,tt.NAME_pers
+FROM military_units m, (
+select s.person_id AS ID_pers, s.name AS NAME_pers ,s.unit_id as kek from staff s, ranks r
+where s.rank_id=r.rank_id AND r.priority<=3) tt
+where tt.kek=m.unit_id
+) kk
+LEFT OUTER JOIN staff ss
+ON ss.unit_id=kk.parent_id
 
+
+SELECT table1.ID_PERS,table1.NAME_PERS,M.PARENT_ID FROM
+(
+select s.person_id AS ID_pers, s.name AS NAME_pers ,s.unit_id as UN_ID from staff s, ranks r
+where s.rank_id=r.rank_id AND r.priority<=3
+) table1,military_units M
+where table1.UN_ID=m.unit_id
+
+
+select name, (select name from staff sf2 where sf2.unit_id = (SELECT unit_id from military_units mu where mu.name = (SELECT * from (SELECT name FROM military_units ms START WITH ms.name = 'Squad #3' CONNECT BY PRIOR parent_id = unit_id) where name LIKE '%Company%'))) from staff sf where (select priority from ranks rs where sf.rank_id = rs.rank_id) < 5
+
+
+
+select name, (select name from staff sf2 where sf2.unit_id IN
+(
+SELECT unit_id from military_units mu where mu.name IN
+(
+SELECT name FROM military_units ms where name LIKE '%Company%'
+)
+)
+)
+from staff sf where (select priority from ranks rs where sf.rank_id = rs.rank_id) < 5
+
+SELECT NAME,
+(select name from staff sf2 where sf2.unit_id IN
+(SELECT unit_id from military_units mu where mu.name IN
+(SELECT name FROM military_units ms where name LIKE '%Company%')
+)
+)
+FROM staff sf where (select priority from ranks rs where sf.rank_id = rs.rank_id) < 5
+
+
+
+SELECT st.name from
+(SELECT m.parent_id,tt.id_pers,tt.NAME_pers
+FROM military_units m, (
+select s.person_id AS ID_pers, s.name AS NAME_pers ,s.unit_id as kek from staff s, ranks r
+where s.rank_id=r.rank_id AND r.priority<=3) tt
+where tt.kek=m.unit_id ORDER BY name_pers)
+T1,staff st
+START WITH t1.name_pers
+
+
+SELECT str if name IN ('Trofimov','Andreev') THEN 'Alexeev' ELSE 'Zakharov' END from
+(
+select name, (select name from staff sf2 where sf2.unit_id = (SELECT unit_id from military_units mu where mu.name = (SELECT * from (SELECT name FROM military_units ms START WITH ms.name = 'Squad #3' CONNECT BY PRIOR parent_id = unit_id) where name LIKE '%Company%'))) as str from staff sf where (select priority from ranks rs where sf.rank_id = rs.rank_id) < 5
+)
 
 
