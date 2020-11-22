@@ -436,4 +436,5 @@ SELECT str if name IN ('Trofimov','Andreev') THEN 'Alexeev' ELSE 'Zakharov' END 
 select name, (select name from staff sf2 where sf2.unit_id = (SELECT unit_id from military_units mu where mu.name = (SELECT * from (SELECT name FROM military_units ms START WITH ms.name = 'Squad #3' CONNECT BY PRIOR parent_id = unit_id) where name LIKE '%Company%'))) as str from staff sf where (select priority from ranks rs where sf.rank_id = rs.rank_id) < 5
 )
 
+______________________
 
