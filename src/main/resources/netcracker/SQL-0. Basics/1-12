@@ -1,0 +1,5 @@
+Выведите все данные (*) о сотрудниках, которые НЕ находятся в подчинении у менеджеров с id 101 и 102 (включая топ-менеджера)
+
+
+SELECT* from employees
+WHERE  manager_id!=101 AND manager_id!=102 OR manager_id IS NULL

@@ -1,0 +1,8 @@
+Выведите все данные (*) о сотрудниках с зарплатой, равной максимальной зарплате внутри своего отдела.
+Указание: Решите задачу с использованием коррелированного подзапроса.
+
+
+SELECT EMPLOYEE_ID,FIRST_NAME,LAST_NAME,EMAIL,PHONE_NUMBER,HIRE_DATE,JOB_ID,SALARY,COMMISSION_PCT,MANAGER_ID,DEPARTMENT_ID FROM(
+SELECT e.*, MAX(E.salary) over( partition by e.department_id) as MaxSalary FROM employees e
+)
+WHERE SALARY=MaxSalary AND department_id IS NOT NULL

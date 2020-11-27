@@ -1,0 +1,6 @@
+Выведите все данные (*) о тех сотрудниках, зарплаты которых больше, чем средняя зарплата в хотя бы одном из отделов.
+Указание: Использование операторов сравнения с операторами SOME/ANY.
+
+
+SELECT * FROM employees e1 WHERE SALARY >
+SOME(SELECT AVG(e2.salary) FROM employees e2 GROUP BY e2.department_id)

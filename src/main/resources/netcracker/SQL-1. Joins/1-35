@@ -1,0 +1,6 @@
+Вывести почтовый код отдела, в котором работает сотрудник по фамилии 'Sully'.
+
+
+SELECT l.postal_code
+from locations l,departments d,employees e
+where d.location_id=l.location_id AND e.department_id=d.department_id AND e.last_name='Sully'

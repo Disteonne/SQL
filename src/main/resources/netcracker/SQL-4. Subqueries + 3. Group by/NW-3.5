@@ -1,0 +1,10 @@
+Найти заказчиков (customers), сделавшие заказы в тот день или те дни (orderdate), в которые было совершено наибольшее число заказов.
+Вывести: дату (orderdate) и название компании-заказчика (companyname).
+
+
+SELECT DISTINCT t.orderdate,c.companyname FROM
+(
+SELECT * FROM ORDERS oo WHERE oo.ORDERDATE IN(
+SELECT C2 FROM (SELECT COUNT(O1.ORDERID) as C1,O1.ORDERDATE AS C2 from ORDERS O1 GROUP BY O1.ORDERDATE) WHERE C1=6)
+) t, CUSTOMERS c
+WHERE c.customerid=t.customerid

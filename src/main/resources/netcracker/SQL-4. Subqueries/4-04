@@ -1,0 +1,9 @@
+Выведите все данные (*) о сотрудниках с зарплатой, равной максимальной зарплате внутри своего отдела.
+Указание: Решите задачу с использованием некоррелированного подзапроса и оператора IN.
+
+
+SELECT*
+FROM employees
+WHERE (department_id,salary) IN (SELECT department_id,MAX(salary)
+                 FROM employees
+                 GROUP BY department_id)

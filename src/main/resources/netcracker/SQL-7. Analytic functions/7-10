@@ -1,0 +1,6 @@
+Для всех сотрудников вывести фамилию(last_name), дату приёма на работу (hire_date), зарплату (salary)
+и разницу между зарплатой данного сотрудника и средней зарплатой всех сотрудников, нанятых за предыдущий год (включая данного сотрудника).
+Указание: использовать аналитические функции и NUMTOYMINTERVAL.
+
+
+SELECT last_name,hire_date,salary,salary- AVG(salary) over(order by hire_date RANGE BETWEEN NUMTOYMINTERVAL(12, 'MONTH') PRECEDING AND CURRENT ROW) from employees

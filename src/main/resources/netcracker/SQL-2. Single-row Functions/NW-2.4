@@ -1,0 +1,8 @@
+Для всех имен продуктов (PRODUCTNAME) из таблицы PRODUCTS, которые состоят более чем из одного слова,
+выведите первым столбцом само имя, вторым - только первое слово имени. Например:
+Teatime Chocolate Biscuits	Teatime
+Считать, что слова отделяются друг от друга пробелами.
+
+
+SELECT productname,REGEXP_SUBSTR(productname,'[a-zA-Z''-]+{1}') from products
+WHERE REGEXP_COUNT(productname,'[A-Za-z-]*\s?')>2

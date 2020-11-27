@@ -1,0 +1,6 @@
+Выведите максимальное значение средней зарплаты по отделам. Результат округлите до ближайшего целого.
+
+
+SELECT ROUND(MAX(AVG(salary)))  from
+employees
+GROUP BY department_id

@@ -1,0 +1,11 @@
+Для военнослужащего с именем "Vasiliev" вывести всех его подчиненных (прямых и непрямых), у которых, в свою очередь, нет собственных подчиненных.
+Подчинение определяется колонкой chief в таблице staff.
+Вывод: имя военнослужащего, его звание, название подразделения и ID военнослужащего.
+
+
+SELECT e.name,( SELECT r.name from RANKS r where r.RANK_ID=e.RANK_ID) AS RANK,(SELECT m.name from MILITARY_UNITS m WHERE e.unit_id=m.unit_id) AS PODR,e.person_id
+
+from STAFF e
+where connect_by_isleaf=1
+start with e.name='Vasiliev'
+CONNECT BY  PRIOR e.person_id= e.chief

@@ -1,0 +1,6 @@
+Выведите все данные (*) о тех сотрудниках, у которых в трудовой истории (таблица job_history) есть запись о работе в должности ST_CLERK.
+Указание: Использование оператора EXISTS.
+
+
+SELECT * from employees e
+WHERE EXISTS( SELECT job_id from job_history j WHERE job_id='ST_CLERK' AND j.employee_id=e.employee_id)

@@ -1,0 +1,6 @@
+Для каждого заказа из таблицы ORDERS вывести customerid, orderid и суммарную стоимость всех компонентов этого заказа (с учетом скидки).
+Примечание: предполагается, что запрос будет содержать только одно слово SELECT
+
+
+SELECT DISTINCT customerid,orderid, SUM(UNITPRICE*quantity*(1-discount)) OVER(partition by orderid )FROM (select ord.customerid,ord.orderid, det.unitprice,det.Quantity,det.Discount from orders ord,orderdetails det
+where ord.orderid=det.orderid)

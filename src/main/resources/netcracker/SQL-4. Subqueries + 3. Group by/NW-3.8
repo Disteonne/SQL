@@ -1,0 +1,10 @@
+Выведите имена (companyname) и адреса (address) заказчиков (customers), не сделавших ни одного заказа (orders)
+
+
+SELECT companyname, address
+FROM Customers C
+WHERE NOT EXISTS
+  (SELECT CustomerID
+   FROM Orders  o
+   WHERE c.CustomerID = o.CustomerID
+  )

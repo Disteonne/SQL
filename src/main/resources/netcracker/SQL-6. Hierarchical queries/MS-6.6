@@ -1,0 +1,57 @@
+Вывести название самого малочисленного взвода (взвод - это подразделение, название которого начинается с 'Platoon') и его численность.
+При подсчетах численности следует учитывать состав подразделений (отделений), подчиненных данному взводу.
+Если во взводе нет ни одного военнослужащего, он выводиться не должен.
+
+
+ПОПЫТКИ:
+
+SELECT end.names,end.c from(
+SELECT last.names, COUNT(last.unit_id) AS c from(
+SELECT up.name,up.names,up.unit_id,milit.unit_id AS ch from(
+   SELECT st.person_id,st.name AS NAME,st.unit_id,plat.name AS NAMES
+FROM staff st,
+(
+select  * from military_units mil
+where mil.name LIKE 'Platoon%'
+) plat
+   where plat.unit_id=st.unit_id
+  ) up, military_units milit
+ WHERE up.unit_id=milit.parent_id)last
+group by last.names) end
+where end.c=1
+
+
+
+
+
+SELECT employee_id, first_name, last_name  FROM employees
+start with employee_id=100
+connect by manager_id=PRIOR employee_id
+
+
+SELECT employee_id, first_name, last_name  FROM (SELECT * FROM employees e WHERE manager_id NOT NULL)
+start with employee_id=100
+connect by manager_id=PRIOR employee_id
+
+
+SELECT employee_id, first_name, last_name  FROM (SELECT * FROM employees e WHERE manager_id IS NOT NULL)
+start with employee_id=(SELECT e1.employee_id as id FROM employees e1 WHERE manager_id=100)
+connect by manager_id=PRIOR employee_id
+
+
+SELECT employee_id, first_name, last_name FROM employees
+where level!=1
+start with employee_id=100
+connect by manager_id=PRIOR employee_id
+
+SELECT employee_id, first_name, last_name FROM employees
+where  manager_id IS NULL
+UNION SELECT employee_id, first_name, last_name FROM employees
+where  manager_id=100
+
+
+
+SELECT employee_id, first_name, last_name,CONNECT_BY_ISLEAF,level FROM employees
+WHERE CONNECT_BY_ISLEAF=0 AND manager_id=100 OR manager_id IS NULL
+start with manager_id is null
+connect by manager_id= PRIOR employee_id

@@ -1,0 +1,6 @@
+Для всех отделов, располагающихся в городе 'Seattle', вывести название отдела и номер телефона его менеджера.
+Если отдел не имеет менеджера, второй столбец должен содержать NULL
+
+
+select dprt.department_name, empl.phone_number from departments dprt left join employees empl on
+ dprt.manager_id = empl.employee_id where (select city from locations where location_id = dprt.location_id) = 'Seattle'

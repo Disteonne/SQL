@@ -1,0 +1,16 @@
+Выведите иерархию подчинений воинских подразделений сверху вниз, начиная с полка 'Regiment #1271A',
+и численность личного состава, приписанного непосредственно к подразделению.
+Все подчиненные подразделения должны располагаться "лесенкой" с отступом, равным 3-м пробелам.
+О каждом подразделении выводить: название, численность.
+Regiment #1271A	1
+   First Company	1
+      Platoon #1	0
+      Platoon #2	1
+...	...
+
+
+
+SELECT lpad(' ', 3*(level-1))|| name AS name, (SELECT COUNT(*) FROM staff b WHERE a.unit_id = b.unit_id) AS COUNT
+FROM military_units a
+START WITH name='Regiment #1271A'
+CONNECT BY parent_id = prior unit_id

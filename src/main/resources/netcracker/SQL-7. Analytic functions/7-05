@@ -1,0 +1,6 @@
+Для всех сотрудников вывести фамилию, зарплату, фамилию менеджера и максимальную зарплату среди непосредственных подчиненных этого менеджера.
+Если у сотрудника менеджер отсутствует, никакой информации для такого сотрудника выводить не нужно.
+
+
+select LAST_NAME,salary,(select e2.last_name from employees e2
+where e2.employee_id=e1.manager_Id), MAX(salary) over(partition by manager_id) from employees e1 where manager_id IS NOT NULL

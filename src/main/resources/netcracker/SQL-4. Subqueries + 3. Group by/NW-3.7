@@ -1,0 +1,13 @@
+Выведите идентификатор (supplierid) всех поставщиков (suppliers), поставляющих продукцию (products) только одной категории (categories),
+а также имя этой категории (categoryname)
+
+
+SELECT DISTINCT T1.SS,T2.Categoryname from(
+SELECT * FROM products P2,(
+SELECT SUPP as SS FROM(
+SELECT  p.supplierid as supp,COUNT(distinct c.categoryid) as ccc FROM products p,categories c
+WHERE p.categoryid=c.categoryid
+GROUP BY p.supplierid)
+WHERE CCC=1) t
+WHERE p2.supplierid=t.ss) T1, categories T2
+WHERE T1.categoryid=T2.categoryid

@@ -1,0 +1,8 @@
+Для каждой делавшей заказы компании из таблицы CUSTOMERS вывести имя заказчика (companyname), а тремя следующими столбцами - минимальную, максимальную и среднюю
+стоимость заказов этого заказчика с учетом скидки (данные из таблиц ORDERS и ORDERDETAILS).
+Примечание: предполагается, что запрос будет содержать только одно слово SELECT
+
+
+select distinct name, min(value) over(partition by name) as min, max(value)over(partition by name) as max, avg(value) over (partition by name) as avg from (SELECT (select companyname from customers c1 join orders o1 on o1.customerid = c1.customerid where o1.orderid = oo1.orderid)as name, sum(quantity*unitprice*(1-discount)) as value
+FROM orderdetails oo1
+GROUP BY orderid)

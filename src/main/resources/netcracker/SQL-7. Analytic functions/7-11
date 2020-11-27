@@ -1,0 +1,9 @@
+Для всех сотрудников вывести отдел (department_id), фамилию (last_name), зарплату (salary) и количество человек,
+которые, работая в этом же отделе, имеют зарплату (строго) больше, чем данный сотрудник.
+
+
+SELECT
+  t1.department_id, t1.last_name, t1.salary, count(t2.salary)
+FROM employees t1
+LEFT JOIN employees t2 ON t2.salary>t1.salary AND t1.department_id=t2.department_id
+GROUP BY  t1.department_id,  t1.last_name,t1.salary

@@ -1,0 +1,46 @@
+Вывести, какие уникальные иерархии подчинения (от самого старшего командира до младшего подчиненного) присутствуют в таблице staff.
+Под элементом иерархии понимаются не имя военнослужащего, а его воинское звание (таблица ranks).
+Элементы разделяются символом ">", а упорядочиваются от старшего к младшему. Например:
+Colonel>Major>Leutenant>Sergeant
+
+
+ПОПЫТКИ:
+
+SELECT sys_connect_by_path(name,'>') from ranks
+start with rank_id=10
+connect by rank_id= PRIOR rank_id+10
+
+SELECT DISTINCT st.rank_id from ranks r
+right outer join
+staff st
+ON r.rank_id=st.rank_id
+
+SELECT SUBSTR( sys_connect_by_path(name,'>'),2) from ranks
+where connect_by_isleaf=1
+start with rank_id=30
+connect by rank_id= PRIOR rank_id+10
+
+select sys_connect_by_path(name,'>') from
+(
+SELECT DISTINCT st.rank_id,r.name from ranks r
+right outer join
+staff st
+ON r.rank_id=st.rank_id
+order by st.rank_id
+) table
+start with rank_id=30
+connect by rank_id=PRIOR rank_id+10
+
+
+SELECT SUBSTR( sys_connect_by_path(name,'>'),2),ROWNUM from ranks
+WHERE ROWNUM<=5
+start with rank_id=30
+connect by rank_id= PRIOR rank_id+10
+
+
+SELECT DISTINCT (SELECT LISTAGG(name, '>') WITHIN GROUP(ORDER BY priority DESC) as name FROM ranks rs START WITH
+ (SELECT priority FROM ranks rs2 WHERE rs2.rank_id = sf.rank_id) > priority CONNECT BY PRIOR priority = level) as rank FROM staff sf
+
+
+ SELECT * FROM (SELECT DISTINCT (SELECT LISTAGG(name, '>') WITHIN GROUP(ORDER BY priority DESC) as name FROM ranks rs START WITH (SELECT priority FROM ranks rs2 WHERE rs2.rank_id = sf.rank_id) >
+ priority CONNECT BY PRIOR priority = level) as rank FROM staff sf) WHERE rank is not null

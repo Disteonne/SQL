@@ -1,0 +1,16 @@
+Вывести сотрудников (employees), у которых менеджер (manager_id) не совпадает с менеджером отдела,
+где работает сотрудник (department_id, см. также атрибут manager_id в таблице departments).
+Вывести нужно 3 столбца, в каждом из которых - фамилия (last_name): сотрудника, менеджера сотрудника, менеджера отдела.
+Указание: использовать явное именование столбцов результирующей выборки (aliases)
+
+
+SELECT f_name,s_name,e3.last_name as t_name FROM(
+SELECT f_name ,e2.last_name as s_name,depmng FROM(
+ SELECT e.last_name as f_name,mng,depmng FROM(
+  SELECT e1.employee_id as id,e1.manager_id as mng,d.manager_id as depmng from employees e1,departments d
+  where e1.department_id=d.department_id AND e1.manager_id!=d.manager_id) ,employees e
+  WHERE id=e.employee_id),
+employees e2
+WHERE mng=e2.employee_id
+),employees e3
+WHERE depmng=e3.employee_id

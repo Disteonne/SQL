@@ -1,0 +1,4 @@
+Выведите все данные (*) о сотрудниках, которые НЕ находятся в подчинении у менеджеров с id 101 и 102, используя оператор ALL (топ-менеджера включать не надо)
+
+
+SELECT* from employees WHERE manager_id!=ALL(SELECT manager_id from employees WHERE manager_id=101 OR manager_id=102)
